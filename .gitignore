@@ -1,0 +1,14 @@
+terraform.tfvars
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate*
+.terraform/
+crash.log
+*.log
+/Tests/*
+terraformbackendconfig.tf
+Terraformconfig/11_Scripts
+Terraformconfig/12_Velero
+Terraformconfig/10_Tad
+/Modules
+
