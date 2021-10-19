@@ -8,13 +8,7 @@ name: '01_SubSetup_Apply'
 # CD Trigger
 
 trigger:
-  branches:
-    include:
-    - main
-  paths:
-    include:
-    - Terraformconfig/00_SubSetup/*
-    - Modules/*
+  none
 
 # Job Workers config
 
