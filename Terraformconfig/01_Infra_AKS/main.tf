@@ -1,7 +1,13 @@
 ######################################################################
+# backend block for partial configuration
+######################################################################
+terraform {
+  #backend "azurerm" {}
+}
+
+######################################################################
 # Access to Azure
 ######################################################################
-
 provider "azurerm" {
   subscription_id                          = var.AzureSubscriptionID
   client_id                                = var.AzureClientID
