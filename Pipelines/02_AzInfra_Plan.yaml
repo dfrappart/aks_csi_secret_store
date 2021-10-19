@@ -63,19 +63,6 @@ stages:
         displayName: 'Download and update Terraform'
         env:
           TFVer: $(TFVer)
-
-
-      - script: |
-         echo Getting Checkov
-
-         sudo apt update
-         sudo apt install software-properties-common
-         sudo add-apt-repository ppa:deadsnakes/ppa
-         sudo apt install python3.7
-         sudo apt install python3-pip
-         sudo python3.7 -m pip install -U checkov #to install or upgrade checkov)
-         
-        displayName: 'Install Checkov'
       
       - script: |
          echo '######################################################'   
@@ -117,6 +104,18 @@ stages:
           storage_account_name: $(SubSetupSTAName)
           AKSSSHKey: $(AKS-SSH)
           SubsetupKey: $(SubSetupState)
+
+      - script: |
+         echo Getting Checkov
+
+         sudo apt update
+         sudo apt install software-properties-common
+         sudo add-apt-repository ppa:deadsnakes/ppa
+         sudo apt install python3.7
+         sudo apt install python3-pip
+         sudo python3.7 -m pip install -U checkov #to install or upgrade checkov)
+         
+        displayName: 'Install Checkov'
 
       - script: |
          echo '######################################################'   
