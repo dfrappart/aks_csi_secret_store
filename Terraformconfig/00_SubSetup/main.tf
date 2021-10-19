@@ -6,7 +6,7 @@
 # backend block for partial configuration
 ######################################################################
 terraform {
-  backend "azurerm" {}
+  #backend "azurerm" {}
 }
 
 ######################################################################
@@ -181,6 +181,56 @@ module "AKS_AGW_Cert_Wildcard" {
   depends_on = [
     module.AKSKeyVault,
     module.AKSKeyVaultAccessPolicyTF
+  ]
+
+}
+
+######################################################################
+# Creating a private key for AKS later
+
+resource "tls_private_key" "AKSSSHKey" {
+  algorithm   = "RSA"
+  rsa_bits = 4096
+}
+
+module "AKSSSHPubKey_to_KV" {
+
+  #Module Location
+  source                                  = "github.com/dfrappart/Terra-AZModuletest/Modules_building_blocks/412_KeyvaultSecret/"
+
+  #Module variable     
+  KeyVaultSecretSuffix                    = "AKSSSHPub"
+  PasswordValue                           = resource.tls_private_key.AKSSSHKey.public_key_openssh
+  KeyVaultId                              = module.AKSKeyVault.Id
+  ResourceOwnerTag                        = var.ResourceOwnerTag
+  CountryTag                              = var.CountryTag
+  CostCenterTag                           = var.CostCenterTag
+  Environment                             = var.Environment
+  Project                                 = var.Project
+
+  depends_on = [
+    module.AKSKeyVault
+  ]
+
+}
+
+module "AKSSSHPrivKey_to_KV" {
+
+  #Module Location
+  source                                  = "github.com/dfrappart/Terra-AZModuletest/Modules_building_blocks/412_KeyvaultSecret/"
+
+  #Module variable     
+  KeyVaultSecretSuffix                    = "AKSSSHPriv"
+  PasswordValue                           = resource.tls_private_key.AKSSSHKey.private_key_pem 
+  KeyVaultId                              = module.AKSKeyVault.Id
+  ResourceOwnerTag                        = var.ResourceOwnerTag
+  CountryTag                              = var.CountryTag
+  CostCenterTag                           = var.CostCenterTag
+  Environment                             = var.Environment
+  Project                                 = var.Project
+
+  depends_on = [
+    module.AKSKeyVault
   ]
 
 }
