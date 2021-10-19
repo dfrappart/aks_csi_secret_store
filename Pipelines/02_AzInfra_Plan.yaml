@@ -90,7 +90,6 @@ stages:
          echo 'terraform plan'
          terraform plan \
          -var-file="Lab.tfvars" \
-         -var AKSSSHKey=${SSHKey} \
          -var SubsetupAccessKey=${access_key} \
          -var SubsetupKey=${SubsetupKey} \
          -var SubsetupContainerName=${container_name} \
@@ -111,7 +110,6 @@ stages:
           access_key: $(TFStateSTOAK)
           container_name: $(SubSetupContainerName)
           storage_account_name: $(SubSetupSTAName)
-          SSHKey: $(AKS-SSH)
           SubsetupKey: $(SubSetupState)
 
       - script: |
