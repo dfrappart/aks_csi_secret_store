@@ -85,7 +85,20 @@ stages:
          terraform version
          echo
          echo 'check files'
-         ls -a    
+         ls -a
+         echo
+         echo 'terraform plan'
+         terraform plan \
+         -var-file="Lab.tfvars" \
+         -var AKSSSHKey=${SSHKey} \
+         -var SubsetupAccessKey=${access_key} \
+         -var SubsetupKey=${SubsetupKey} \
+         -var SubsetupContainerName=${container_name} \
+         -var SubsetupSTOAName=${storage_account_name} \
+         -var AzureTenantID=${AzureTenantID} \
+         -var AzureClientSecret=${AzureClientSecret} \
+         -var AzureClientID=${AzureClientID} \
+         -var AzureSubscriptionID=${AzureSubscriptionID} \
     
         workingDirectory: 'Terraformconfig/01_Infra_AKS'
         displayName: 'Terraform init & Plan'
@@ -98,7 +111,7 @@ stages:
           access_key: $(TFStateSTOAK)
           container_name: $(SubSetupContainerName)
           storage_account_name: $(SubSetupSTAName)
-          AKSSSHKey: $(AKS-SSH)
+          SSHKey: $(AKS-SSH)
           SubsetupKey: $(SubSetupState)
 
       - script: |
