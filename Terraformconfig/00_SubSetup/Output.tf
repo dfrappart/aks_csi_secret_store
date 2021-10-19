@@ -318,3 +318,26 @@ output "Cert2Name" {
   value               = module.AKS_AGW_Cert_Wildcard[1].Full.name
   sensitive           = true
 }
+
+######################################################################
+# Output private key
+
+output "AKSprivatekey" {
+  value             = resource.tls_private_key.AKSSSHKey
+  sensitive = true
+}
+
+output "AKSSSHPublic_OpenSSH" {
+  value             = resource.tls_private_key.AKSSSHKey.public_key_openssh
+  sensitive = true
+}
+
+output "AKSSSHPublic_OpenSSH_To_Kv" {
+  value             = module.AKSSSHPubKey_to_KV.SecretFullOutput.name
+  sensitive = true
+}
+
+output "AKSSSHPrivKey_To_Kv" {
+  value             = module.AKSSSHPrivKey_to_KV.SecretFullOutput.name
+  sensitive = true
+}
