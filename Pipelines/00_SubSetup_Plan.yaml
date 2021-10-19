@@ -98,7 +98,7 @@ stages:
          terraform version
          echo
          echo 'check files'
-         ls
+         ls -l
          echo 'Plan Terraform'
          echo
          terraform plan -var-file="Lab.tfvars" -var AzureSubscriptionID=${AzureSubscriptionID} -var AzureTenantID=${AzureTenantID} -var AzureClientSecret=${AzureClientSecret} -var AzureClientID=${AzureClientID} -input=false
