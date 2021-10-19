@@ -85,11 +85,7 @@ stages:
          terraform version
          echo
          echo 'check files'
-         ls -l
-         echo 'Plan Terraform'
-         echo
-         terraform plan -chdir=./terraform -var-file="Lab.tfvars" -var AKSSSHKey=${AKSSSHKey} -var SubsetupSTOAName=${storage_account_name} -var SubsetupContainerName=${container_name} -var SubsetupKey=${SubsetupKey} -var SubsetupAccessKey=${access_key} -var AzureSubscriptionID=${AzureSubscriptionID} -var AzureTenantID=${AzureTenantID} -var AzureClientSecret=${AzureClientSecret} -var AzureClientID=${AzureClientID} -input=false
-     
+         ls -a    
     
         workingDirectory: 'Terraformconfig/01_Infra_AKS'
         displayName: 'Terraform init & Plan'
