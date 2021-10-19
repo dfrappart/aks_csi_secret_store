@@ -64,6 +64,18 @@ stages:
         env:
           TFVer: $(TFVer)
 
+
+      - script: |
+         echo Getting Checkov
+
+         sudo apt update
+         sudo apt install software-properties-common
+         sudo add-apt-repository ppa:deadsnakes/ppa
+         sudo apt install python3.7
+         sudo apt install python3-pip
+         sudo python3.7 -m pip install -U checkov #to install or upgrade checkov)
+         
+        displayName: 'Install Checkov'
       
       - script: |
          echo '######################################################'   
@@ -103,4 +115,21 @@ stages:
           access_key: $(TFStateSTOAK)
           container_name: $(SubSetupContainerName)
           storage_account_name: $(SubSetupSTAName)
+
+      - script: |
+         echo '######################################################'   
+         echo 'Checkov scan in directory '
+         echo '######################################################'
+         echo
+         checkov -d . --baseline ./.checkov.baseline
+         echo
+#         echo '######################################################'   
+#         echo 'Checkov scan from previous plan '
+#         echo '######################################################'
+#         echo
+#         terraform show -json tf.plan  > tf.json
+#         checkov -f ./tf.json --baseline ./.checkov.baseline     
+    
+        workingDirectory: 'TerraformConfig/00_SubSetup'
+        displayName: 'Checkov Scan'
 
