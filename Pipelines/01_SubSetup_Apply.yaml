@@ -30,7 +30,7 @@ variables:
 # Stages
 
 stages:
-  - stage: terraform_plan_stage
+  - stage: terraform_apply_stage
     jobs: 
     - job: terraform_plan
       continueOnError: false
