@@ -2,7 +2,7 @@
 # backend block for partial configuration
 ######################################################################
 terraform {
-  backend "azurerm" {}
+  #backend "azurerm" {}
 }
 
 ######################################################################
@@ -97,7 +97,7 @@ module "AKS" {
   AKSClusSuffix                           = "${var.AKSClusSuffix}${count.index+1}"
   AKSIdentityType                         = "UserAssigned"
   UAIId                                   = module.UAI_AKS[count.index].FullUAIOutput.id
-  PublicSSHKey                            = var.AKSSSHKey
+  PublicSSHKey                            = data.azurerm_key_vault_secret.AKSSSHKey.name
   #IsAGICEnabled                           = true
   #AGWId                                   = module.AGW.AppGW.id
   #PrivateClusterPublicFqdn                = true

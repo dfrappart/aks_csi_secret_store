@@ -129,12 +129,6 @@ variable "SubsetupKey" {
 ######################################################
 # AKS variables
 
-variable "AKSSSHKey" {
-  type                            = string
-  description                     = "The SSH PublicKey"
-
-}
-
 variable "AKSClusterAdminsIds" {
   type                          = string
   description                   = " A list of Object IDs of Azure Active Directory Groups which should have Admin Role on the Cluster."

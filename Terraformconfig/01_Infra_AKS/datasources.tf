@@ -79,3 +79,10 @@ data "azurerm_key_vault_secret" "AGWCertForAGICSecret" {
   name                        = data.terraform_remote_state.Subsetupstate.outputs.Cert1Name
   key_vault_id                = data.terraform_remote_state.Subsetupstate.outputs.AKSKeyVault_Id
 }
+
+# data sourcing the aks ssh key in the kv
+
+data "azurerm_key_vault_secret" "AKSSSHKey" {
+  name                        = data.terraform_remote_state.Subsetupstate.outputs.AKSSSHPublic_OpenSSH_To_Kv
+  key_vault_id                = data.terraform_remote_state.Subsetupstate.outputs.AKSKeyVault_Id
+}
