@@ -2,7 +2,7 @@
 # backend block for partial configuration
 ######################################################################
 terraform {
-  #backend "azurerm" {}
+  backend "azurerm" {}
 }
 
 ######################################################################
