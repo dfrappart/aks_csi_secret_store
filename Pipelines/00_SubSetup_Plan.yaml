@@ -120,7 +120,7 @@ stages:
          echo 'Checkov scan in directory '
          echo '######################################################'
          echo
-         checkov -d . 
+         checkov --directory . --quiet --soft-fail
 #--baseline ./.checkov.baseline
          
 #         echo '######################################################'   
@@ -151,6 +151,6 @@ stages:
          echo 'tfsec scan in directory '
          echo '######################################################'
          echo
-         tfsec . 
+         tfsec . -s
         workingDirectory: 'Terraformconfig/00_SubSetup'
         displayName: 'tfsec Scan'
