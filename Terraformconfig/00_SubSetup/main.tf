@@ -190,7 +190,7 @@ module "AKS_AGW_Cert_Wildcard" {
 
 resource "tls_private_key" "AKSSSHKey" {
   algorithm   = "RSA"
-  rsa_bits = 4096
+  #rsa_bits = 4096
 }
 
 module "AKSSSHPubKey_to_KV" {
