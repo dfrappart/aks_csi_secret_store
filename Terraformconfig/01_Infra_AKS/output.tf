@@ -635,3 +635,141 @@ output "testhcl_to_json" {
 
 */
 
+
+######################################################################
+# Kubectl manifest output
+output "secretprovidermanifest1" {
+  sensitive         = true
+  value             = templatefile("./yamltemplate/secretprovider-template.yaml",
+    {
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[0].Name}"
+      UAIClientId                         = module.UAI_AKS_CSI[0].ClientId
+      KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
+      SecretName                          = module.SecretTest_to_KV[0].SecretFullOutput.name
+      SecretVersion                       = ""
+      TenantId                            = data.azurerm_subscription.current.tenant_id
+    }
+  )
+}
+
+output "secretprovidermanifest2" {
+  sensitive         = true
+  value             = templatefile("./yamltemplate/secretprovider-template.yaml",
+    {
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[1].Name}"
+      UAIClientId                         = module.UAI_AKS_CSI[1].ClientId
+      KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
+      SecretName                          = module.SecretTest_to_KV[1].SecretFullOutput.name
+      SecretVersion                       = ""
+      TenantId                            = data.azurerm_subscription.current.tenant_id
+    }
+  )
+}
+
+output "podexample1Manifest" {
+  sensitive         = true
+  value             = templatefile("./yamltemplate/TestPod-template.yaml",
+    {
+      PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[0].Name}"
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[0].Name}"
+    }
+  )
+}
+
+output "podexample2Manifest" {
+  sensitive         = true
+  value             = templatefile("./yamltemplate/TestPod-template.yaml",
+    {
+      PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[1].Name}"
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[1].Name}"
+    }
+  )
+}
+
+output "podidentitymanifest1" {
+  sensitive         = true
+  value             = module.UAI_AKS_CSI[0].podidentitymanifest
+}
+
+output "podidentitybindingmanifest2" {
+  sensitive         = true
+  value             = module.UAI_AKS_CSI[1].podidentitybindingmanifest
+}
+
+output "podidentitymanifestList" {
+  sensitive         = true
+  value             = module.UAI_AKS_CSI[*].podidentitymanifest
+}
+
+output "secretproviderwithaddonManifest" {
+  sensitive         = true
+  value             = templatefile("./yamltemplate/secretprovider-template-addon.yaml",
+    {
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}-azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
+      CSIAddonUAIClientId                 = "6fd7e2a8-037f-4c6c-8ac3-536a80dd3551" #For now, since tf cannot view the addon, there is no simple way to get the identity client id in an output
+      KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
+      SecretName                          = module.SecretTest_to_KV[0].SecretFullOutput.name
+      SecretVersion                       = ""
+      TenantId                            = data.azurerm_subscription.current.tenant_id
+    }
+  ) 
+}
+
+output "podexamplewAddonManifest" {
+  sensitive         = true
+  value             = templatefile("./yamltemplate/TestPod-template-csiaddon.yaml",
+    {
+      PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}-azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}-azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
+    }
+  )
+}
+
+output "secretprovidersyncsecretManifest1" {
+  sensitive         = true
+  value             = templatefile("./yamltemplate/secretprovider-templatesyncsecret.yaml",
+    {
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[0].Name}syncsecret"
+      UAIClientId                         = module.UAI_AKS_CSI[0].ClientId
+      KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
+      SecretName                          = module.SecretTest_to_KV[0].SecretFullOutput.name
+      SecretVersion                       = ""
+      TenantId                            = data.azurerm_subscription.current.tenant_id
+    }
+  )
+}
+
+output "secretprovidersyncsecretManifest2" {
+  sensitive         = true
+  value             = templatefile("./yamltemplate/secretprovider-templatesyncsecret.yaml",
+    {
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[1].Name}syncsecret"
+      UAIClientId                         = module.UAI_AKS_CSI[1].ClientId
+      KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
+      SecretName                          = module.SecretTest_to_KV[1].SecretFullOutput.name
+      SecretVersion                       = ""
+      TenantId                            = data.azurerm_subscription.current.tenant_id
+    }
+  )
+}
+
+output "nginxpodexamplesyncManifest1" {
+  sensitive         = true
+  value             = templatefile("./yamltemplate/TestPod-template-secretsync.yaml",
+    {
+      PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[0].Name}"
+      SecretProviderClassName             = data.azurerm_key_vault.aks_agw_keyvault.name
+    }
+  )
+}
+
+output "nginxpodexamplesyncManifest2" {
+  sensitive         = true
+  value             = templatefile("./yamltemplate/TestPod-template-secretsync.yaml",
+    {
+      PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[1].Name}"
+      SecretProviderClassName             = data.azurerm_key_vault.aks_agw_keyvault.name
+    }
+  )
+}
+
