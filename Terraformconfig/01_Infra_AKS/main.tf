@@ -255,6 +255,8 @@ SCHEMA
 
 }
 
+######################################################################
+# Creating Secrets in kv for demo purpose
 
 module "SecretTest_to_KV" {
 
@@ -280,7 +282,7 @@ module "SecretTest_to_KV" {
 
 
 ######################################################################
-# Creating a test UAI for Kubernetes and CSI Test
+# Creating a UAI for Kubernetes and CSI Demo with Pod Identity
 
 module "UAI_AKS_CSI" {
 
@@ -303,6 +305,8 @@ module "UAI_AKS_CSI" {
 
 }
 
+# Creating file manifest for csi demo
+
 resource "local_file" "podidentitymanifest" {
   count                                   = 2
   content                                 = module.UAI_AKS_CSI[count.index].podidentitymanifest
@@ -319,27 +323,29 @@ resource "local_file" "secretprovider" {
   count                                   = 2
   content                                 = templatefile("./yamltemplate/secretprovider-template.yaml",
     {
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[count.index].Name}"
       UAIClientId                         = module.UAI_AKS_CSI[count.index].ClientId
-      UAIName                             = module.UAI_AKS_CSI[count.index].Name
       KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
       SecretName                          = module.SecretTest_to_KV[count.index].SecretFullOutput.name
       SecretVersion                       = ""
       TenantId                            = data.azurerm_subscription.current.tenant_id
     }
   )
-  filename = "../04_CSI_Secret_Store_Manifest/SecretStore/${lower(data.azurerm_key_vault.aks_agw_keyvault.name)}${count.index+1}-secretstore.yaml"
+  filename = "../04_CSI_Secret_Store_Manifest/SecretStore/${lower(data.azurerm_key_vault.aks_agw_keyvault.name)}${count.index+1}-podid-secretstore.yaml"
 }
 
 resource "local_file" "podexample" {
   count                                   = 2
   content                                 = templatefile("./yamltemplate/TestPod-template.yaml",
     {
-      UAIName                             = module.UAI_AKS_CSI[count.index].Name
-      KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
+      PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[count.index].Name}"
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[count.index].Name}"
     }
   )
   filename = "../04_CSI_Secret_Store_Manifest/demo-pod${count.index+1}.yaml"
 }
+
+# Granting access to UAI on the target kv
 
 module "AKSKeyVaultAccessPolicy_UAI_AKS_CSI" {
 
@@ -362,12 +368,14 @@ module "AKSKeyVaultAccessPolicy_UAI_AKS_CSI" {
 ######################################################################
 # Creating the file for the CSI with the addon identity
 
+
+# Creating the manifest file for the secret provider class
 resource "local_file" "secretproviderwithaddon" {
 
   content                                 = templatefile("./yamltemplate/secretprovider-template-addon.yaml",
     {
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}-azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
       CSIAddonUAIClientId                 = "6fd7e2a8-037f-4c6c-8ac3-536a80dd3551" #For now, since tf cannot view the addon, there is no simple way to get the identity client id in an output
-      CSIAddonUAIName                     = "azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
       KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
       SecretName                          = module.SecretTest_to_KV[0].SecretFullOutput.name
       SecretVersion                       = ""
@@ -377,6 +385,7 @@ resource "local_file" "secretproviderwithaddon" {
   filename = "../04_CSI_Secret_Store_Manifest/SecretStore/${lower(data.azurerm_key_vault.aks_agw_keyvault.name)}-secretstore-withaddon.yaml"
 }
 
+# Granting access to addon UAI on the target kv
 module "AKSKeyVaultAccessPolicy_UAI_AKS_CSIAddon" {
 
 
@@ -396,11 +405,10 @@ module "AKSKeyVaultAccessPolicy_UAI_AKS_CSIAddon" {
 }
 
 resource "local_file" "podexamplewithaddon" {
-  count                                   = 2
   content                                 = templatefile("./yamltemplate/TestPod-template-csiaddon.yaml",
     {
-      CSIAddonUAI                         = "azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
-      KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
+      PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}-azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}-azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
     }
   )
   filename = "../04_CSI_Secret_Store_Manifest/demo-pod-csiaddon.yaml"
@@ -413,8 +421,8 @@ resource "local_file" "secretprovidersyncsecret" {
   count                                   = 2
   content                                 = templatefile("./yamltemplate/secretprovider-templatesyncsecret.yaml",
     {
+      SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[count.index].Name}syncsecret"
       UAIClientId                         = module.UAI_AKS_CSI[count.index].ClientId
-      UAIName                             = module.UAI_AKS_CSI[count.index].Name
       KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
       SecretName                          = module.SecretTest_to_KV[count.index].SecretFullOutput.name
       SecretVersion                       = ""
@@ -423,3 +431,15 @@ resource "local_file" "secretprovidersyncsecret" {
   )
   filename = "../04_CSI_Secret_Store_Manifest/SecretStore/${lower(data.azurerm_key_vault.aks_agw_keyvault.name)}${count.index+1}-secretstore-synctosecret.yaml"
 }
+
+resource "local_file" "nginxpodexamplesyncsecret" {
+  count                                   = 2
+  content                                 = templatefile("./yamltemplate/TestPod-template-secretsync.yaml",
+    {
+      PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[count.index].Name}"
+      SecretProviderClassName             = data.azurerm_key_vault.aks_agw_keyvault.name
+    }
+  )
+  filename = "../04_CSI_Secret_Store_Manifest/demopod-syncsecret${count.index}.yaml"
+}
+
