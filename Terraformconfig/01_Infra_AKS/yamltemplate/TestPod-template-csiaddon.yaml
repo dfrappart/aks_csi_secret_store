@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx-secrets-store-inline-${CSIAddonUAI}
+  name: ${PodName}
 spec:
   containers:
     - name: nginx
@@ -16,4 +16,4 @@ spec:
         driver: secrets-store.csi.k8s.io
         readOnly: true
         volumeAttributes:
-          secretProviderClass: ${KVName}${CSIAddonUAI}
+          secretProviderClass: ${SecretProviderClassName}
