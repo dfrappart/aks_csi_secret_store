@@ -97,7 +97,7 @@ module "AKS" {
   AKSClusSuffix                           = "${var.AKSClusSuffix}${count.index+1}"
   AKSIdentityType                         = "UserAssigned"
   UAIId                                   = module.UAI_AKS[count.index].FullUAIOutput.id
-  PublicSSHKey                            = data.azurerm_key_vault_secret.AKSSSHKey.name
+  PublicSSHKey                            = data.azurerm_key_vault_secret.AKSSSHKey.value
   #IsAGICEnabled                           = true
   #AGWId                                   = module.AGW.AppGW.id
   #PrivateClusterPublicFqdn                = true
