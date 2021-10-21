@@ -167,7 +167,7 @@ Events:
 
 ```
 
-Everything seems alright, check the access to the keyvault: 
+Everything seems alright, check the access to the keyvault:
 
 ```bash
 

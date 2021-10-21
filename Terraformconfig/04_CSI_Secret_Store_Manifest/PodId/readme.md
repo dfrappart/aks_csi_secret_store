@@ -29,7 +29,7 @@ EOT
 
 ```
 
-Using hte local_file resource as below, we generate the files in this folder. However, those file are not added in git: 
+Using hte local_file resource as below, we generate the files in this folder. However, those file are not added in git:
 
 ```bash
 
