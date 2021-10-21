@@ -672,6 +672,7 @@ output "podexample1Manifest" {
     {
       PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[0].Name}"
       SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[0].Name}"
+      UAIName                             = module.UAI_AKS_CSI[0].Name
     }
   )
 }
@@ -682,6 +683,7 @@ output "podexample2Manifest" {
     {
       PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[1].Name}"
       SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[1].Name}"
+      UAIName                             = module.UAI_AKS_CSI[1].Name
     }
   )
 }

@@ -340,6 +340,7 @@ resource "local_file" "podexample" {
     {
       PodName                             = "pod-${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[count.index].Name}"
       SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}${module.UAI_AKS_CSI[count.index].Name}"
+      UAIName                             = module.UAI_AKS_CSI[count.index].Name
     }
   )
   filename = "../04_CSI_Secret_Store_Manifest/demo-pod${count.index+1}.yaml"
@@ -375,7 +376,7 @@ resource "local_file" "secretproviderwithaddon" {
   content                                 = templatefile("./yamltemplate/secretprovider-template-addon.yaml",
     {
       SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}-azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
-      CSIAddonUAIClientId                 = "6fd7e2a8-037f-4c6c-8ac3-536a80dd3551" #For now, since tf cannot view the addon, there is no simple way to get the identity client id in an output
+      CSIAddonUAIClientId                 = "c2806136-eb6e-48bc-8d63-52f4ecb89c28" #For now, since tf cannot view the addon, there is no simple way to get the identity client id in an output
       KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
       SecretName                          = module.SecretTest_to_KV[0].SecretFullOutput.name
       SecretVersion                       = ""
@@ -395,7 +396,7 @@ module "AKSKeyVaultAccessPolicy_UAI_AKS_CSIAddon" {
   #Module variable     
   VaultId                                 = data.azurerm_key_vault.aks_agw_keyvault.id
   KeyVaultTenantId                        = data.azurerm_subscription.current.tenant_id
-  KeyVaultAPObjectId                      = "26f20699-42a9-4f7b-aacb-bb85d5bb5bed" #For now, since tf cannot view the addon, there is no simple way to get the identity client id in an output
+  KeyVaultAPObjectId                      = "f63cec5c-e31b-436c-a79b-84bf72d15cd1" #For now, since tf cannot view the addon, there is no simple way to get the identity client id in an output
   Secretperms                             = var.Secretperms_UAI_AKS_CSI_AccessPolicy
 
   depends_on = [
@@ -440,6 +441,6 @@ resource "local_file" "nginxpodexamplesyncsecret" {
       SecretProviderClassName             = data.azurerm_key_vault.aks_agw_keyvault.name
     }
   )
-  filename = "../04_CSI_Secret_Store_Manifest/demopod-syncsecret${count.index}.yaml"
+  filename = "../04_CSI_Secret_Store_Manifest/demopod-syncsecret${count.index+1}.yaml"
 }
 

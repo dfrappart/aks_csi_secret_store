@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: ${PodName}
+  labels:
+    aadpodidbinding: ${UAIName}-binding
 spec:
   containers:
     - name: nginx
