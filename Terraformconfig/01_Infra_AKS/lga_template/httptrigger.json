@@ -81,7 +81,7 @@
         "$connections": {
             "value": {
                 "teams": {
-                    "connectionId": "/subscriptions/$SubId/resourceGroups/rsgagicmeetup2kured/providers/Microsoft.Web/connections/teams",
+                    "connectionId": "/subscriptions/$SubId/resourceGroups/$rsgname/providers/Microsoft.Web/connections/teams",
                     "connectionName": "teams",
                     "id": "/subscriptions/$SubId/providers/Microsoft.Web/locations/westeurope/managedApis/teams"
                 }

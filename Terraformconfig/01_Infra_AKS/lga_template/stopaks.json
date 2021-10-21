@@ -195,7 +195,7 @@
         "$connections": {
             "value": {
                 "arm": {
-                    "connectionId": "/subscriptions/$SubId/resourceGroups/rsgcsimeetupkured1/providers/Microsoft.Web/connections/arm",
+                    "connectionId": "/subscriptions/$SubId/resourceGroups/$rsgname/providers/Microsoft.Web/connections/arm",
                     "connectionName": "arm",
                     "id": "/subscriptions/$SubId/providers/Microsoft.Web/locations/westeurope/managedApis/arm"
                 }
