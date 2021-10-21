@@ -11,4 +11,7 @@ Terraformconfig/11_Scripts
 Terraformconfig/12_Velero
 Terraformconfig/10_Tad
 /Modules
-
+.terraform.lock.hcl
+/Terraformconfig/04_CSI_Secret_Store_Manifest/*.yaml
+Terraformconfig/04_CSI_Secret_Store_Manifest/SecretStore/*.yaml
+Terraformconfig/04_CSI_Secret_Store_Manifest/PodId/*.yaml
