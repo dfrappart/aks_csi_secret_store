@@ -256,6 +256,43 @@ SCHEMA
 }
 
 ######################################################################
+# Test Logic App start stop AKS
+
+module "LGA_StopAKS" {
+
+  count                                   = 2 
+  #Module Location
+  source                                  = "github.com/dfrappart/Terra-AZModuletest//Modules_building_blocks//700_LogicAppBasic/"
+  #Module variable      
+  LGASuffix                               = "${var.ResourcesSuffix}StopAKS${count.index+1}"
+  RGName                                  = module.ResourceGroup_Kured[count.index].RGFull.name
+  LGALocation                             = var.AzureRegion
+  ResourceOwnerTag                        = var.ResourceOwnerTag
+  CountryTag                              = var.CountryTag
+  CostCenterTag                           = var.CostCenterTag
+  EnvironmentTag                          = var.Environment
+  Project                                 = var.Project
+
+}
+
+module "LGA_StartAKS" {
+
+  count                                   = 2 
+  #Module Location
+  source                                  = "github.com/dfrappart/Terra-AZModuletest//Modules_building_blocks//700_LogicAppBasic/"
+  #Module variable      
+  LGASuffix                               = "${var.ResourcesSuffix}StartAKS${count.index+1}"
+  RGName                                  = module.ResourceGroup_Kured[count.index].RGFull.name
+  LGALocation                             = var.AzureRegion
+  ResourceOwnerTag                        = var.ResourceOwnerTag
+  CountryTag                              = var.CountryTag
+  CostCenterTag                           = var.CostCenterTag
+  EnvironmentTag                          = var.Environment
+  Project                                 = var.Project
+
+}
+
+######################################################################
 # Creating Secrets in kv for demo purpose
 
 module "SecretTest_to_KV" {
