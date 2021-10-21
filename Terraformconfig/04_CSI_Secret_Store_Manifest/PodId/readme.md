@@ -4,7 +4,7 @@ This folder is used as a target for the creation of yaml manifest for pod identi
 
 ```powershell
 
-PS C:\Users\davidfrappart\Documents\IaC\Azure\AKSPodIdMeetup\01_Infra> terraform output UAI1_podidentitybindingmanifest
+PS C:\Users\AKSMeetup_CSI_Secret_Store\Terraformconfig\01_Infra> terraform output UAI1_podidentitybindingmanifest
 <<EOT
 apiVersion: "aadpodidentity.k8s.io/v1"
 kind: AzureIdentityBinding
@@ -15,7 +15,7 @@ spec:
   selector: uailab1-binding
 EOT
 
-PS C:\Users\davidfrappart\Documents\IaC\Azure\AKSPodIdMeetup\01_Infra> terraform output UAI1_podidentitymanifest
+PS C:\Users\AKSMeetup_CSI_Secret_Store\Terraformconfig\01_Infra> terraform output UAI1_podidentitymanifest
 <<EOT
 apiVersion: "aadpodidentity.k8s.io/v1"
 kind: AzureIdentity
