@@ -15,3 +15,5 @@ Terraformconfig/10_Tad
 /Terraformconfig/04_CSI_Secret_Store_Manifest/*.yaml
 Terraformconfig/04_CSI_Secret_Store_Manifest/SecretStore/*.yaml
 Terraformconfig/04_CSI_Secret_Store_Manifest/PodId/*.yaml
+armextract
+backend*.hcl
