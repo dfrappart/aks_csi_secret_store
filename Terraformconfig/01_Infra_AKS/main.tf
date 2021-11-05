@@ -231,7 +231,7 @@ module "LGA_Kured" {
 }
 
 resource "azurerm_logic_app_trigger_http_request" "testhttptriggerlga" {
-  count        = 1
+  count        = 2
   name         = "testhttptriggerlga${count.index+1}"
   logic_app_id = module.LGA_Kured[count.index].LGAFull.id
 
