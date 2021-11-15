@@ -380,7 +380,7 @@ resource "local_file" "podexample" {
       UAIName                             = module.UAI_AKS_CSI[count.index].Name
     }
   )
-  filename = "../04_CSI_Secret_Store_Manifest/demo-pod${count.index+1}.yaml"
+  filename = "../04_CSI_Secret_Store_Manifest/SampleWorkloads/demo-pod${count.index+1}.yaml"
 }
 
 # Granting access to UAI on the target kv
@@ -413,7 +413,7 @@ resource "local_file" "secretproviderwithaddon" {
   content                                 = templatefile("./yamltemplate/secretprovider-template-addon.yaml",
     {
       SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}-azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
-      CSIAddonUAIClientId                 = "c2806136-eb6e-48bc-8d63-52f4ecb89c28" #For now, since tf cannot view the addon, there is no simple way to get the identity client id in an output
+      CSIAddonUAIClientId                 = "00000000-0000-0000-0000-000000000000" #For now, since tf cannot view the addon, there is no simple way to get the identity client id in an output
       KVName                              = data.azurerm_key_vault.aks_agw_keyvault.name
       SecretName                          = module.SecretTest_to_KV[0].SecretFullOutput.name
       SecretVersion                       = ""
@@ -433,7 +433,7 @@ module "AKSKeyVaultAccessPolicy_UAI_AKS_CSIAddon" {
   #Module variable     
   VaultId                                 = data.azurerm_key_vault.aks_agw_keyvault.id
   KeyVaultTenantId                        = data.azurerm_subscription.current.tenant_id
-  KeyVaultAPObjectId                      = "f63cec5c-e31b-436c-a79b-84bf72d15cd1" #For now, since tf cannot view the addon, there is no simple way to get the identity client id in an output
+  KeyVaultAPObjectId                      = "00000000-0000-0000-0000-000000000000" #For now, since tf cannot view the addon, there is no simple way to get the identity client id in an output
   Secretperms                             = var.Secretperms_UAI_AKS_CSI_AccessPolicy
 
   depends_on = [
@@ -449,7 +449,7 @@ resource "local_file" "podexamplewithaddon" {
       SecretProviderClassName             = "${data.azurerm_key_vault.aks_agw_keyvault.name}-azurekeyvaultsecretsprovider-${module.AKS[0].KubeName}"
     }
   )
-  filename = "../04_CSI_Secret_Store_Manifest/demo-pod-csiaddon.yaml"
+  filename = "../04_CSI_Secret_Store_Manifest/SampleWorkloads/demo-pod-csiaddon.yaml"
 }
 
 ######################################################################
@@ -478,6 +478,6 @@ resource "local_file" "nginxpodexamplesyncsecret" {
       SecretProviderClassName             = data.azurerm_key_vault.aks_agw_keyvault.name
     }
   )
-  filename = "../04_CSI_Secret_Store_Manifest/demopod-syncsecret${count.index+1}.yaml"
+  filename = "../04_CSI_Secret_Store_Manifest/SampleWorkloads/demopod-syncsecret${count.index+1}.yaml"
 }
 
